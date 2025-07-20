@@ -12,7 +12,7 @@ require("./src/db/mongoose");
 const app = express();
 const port = process.env.PORT || 4002;
 
-const allowedOrigin = process.env.TRACKING_BUDGET_FRONTEND_URL;
+const allowedOrigin = process.env.DIET_PLANNER_FRONTEND_URL;
 app.use(cors({
     origin: function (origin, callback) {
         // Allow requests with no origin (like mobile apps, curl, or Postman)
