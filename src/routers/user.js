@@ -16,7 +16,7 @@ router.post("/user/me", auth, async (req, res) => {
 });
 
 router.get("/", async (req, res) => {
-    res.send("Welcome to Tracking Budget app!");
+    res.send("Welcome to Diet Planner app!");
 });
 
 module.exports = router;

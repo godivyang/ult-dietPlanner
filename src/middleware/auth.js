@@ -8,13 +8,13 @@ const auth = async (req, res, next) => {
     try {
         let token = req.cookies.token;
         // let token;
-        // console.log("token", token)
+        console.log("token", token)
         
         if(!token) {
             if(req.body.code) {
-                // console.log("Step 2 success", req.body.code)
+                console.log("Step 2 success", req.body.code)
                 token = await checkIfValidCode(req.body.code);
-                // console.log("Step 3 success", token);
+                console.log("Step 3 success", token);
             } else {
                 throw new Error();
             }
@@ -24,9 +24,9 @@ const auth = async (req, res, next) => {
         let verifyToken = await checkIfValidToken(token);
         if(!verifyToken) {
             if(req.body.code) {
-                // console.log("Step 2 success", req.body.code)
+                console.log("Step 2 success", req.body.code)
                 token = await checkIfValidCode(req.body.code);
-                // console.log("Step 3 success", token);
+                console.log("Step 3 success", token);
                 verifyToken = await checkIfValidToken(token);
             } else {
                 throw new Error();
@@ -47,10 +47,10 @@ const auth = async (req, res, next) => {
 const checkIfValidCode = async (code) => {
     try {
         const response = await axiosInstance.post("/sso/crossAppLogin", { code });
-        // console.log("response",response.data)
+        console.log("response",response.data)
         return response.data;
     } catch (e) {
-        // console.log("Step 3 failed")
+        console.log("Step 3 failed")
         return undefined;
     };
 }
@@ -58,10 +58,10 @@ const checkIfValidCode = async (code) => {
 const checkIfValidToken = async (token) => {
     try {
         const response = await axiosInstance.post("/user/me", { token });
-        // console.log("Step 4 success")
+        console.log("Step 4 success")
         return response.data;
     } catch (e) {
-        // console.log("Step 4 failed")
+        console.log("Step 4 failed")
         return undefined;
     }
 }
