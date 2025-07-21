@@ -31,6 +31,7 @@ dietsSchema.post('save', async function (doc) {
                 diets.forEach(async description => {
                     if(!description) return;
                     try {
+                        description = description.trim().split(" ").filter(d => d).join(" ");
                         let suggestion = new Suggestions({ description, author });
                         await suggestion.save();
                     } catch (e) {}
