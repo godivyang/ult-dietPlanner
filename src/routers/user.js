@@ -11,8 +11,26 @@ const tokenOptions = {
 
 router.post("/user/me", auth, async (req, res) => {
     // console.log("user", req.author);
-    res.cookie("token", req.token, tokenOptions);
-    res.send(req.userName);
+    try {
+        res.cookie("token", req.token, tokenOptions);
+        res.send({
+            success: true,
+            data: req.userName,
+            details: {
+                code: "SUCCESS",
+                message: "Token validated successfully!"
+            }
+        });
+    } catch (e) {
+        console.log(e)
+        res.status(400).send({
+            success: false,
+            details: {
+                code: "AUTH_ERROR",
+                message: "Token validation failed!"
+            }
+        })
+    }
 });
 
 router.get("/", async (req, res) => {

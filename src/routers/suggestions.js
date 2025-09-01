@@ -8,9 +8,22 @@ router.get("/suggestions", auth, async (req, res) => {
         const suggestions = await Suggestions.find({
             author: req.userId
         });
-        res.send(suggestions);
+        res.send({
+            success: true,
+            data: suggestions,
+            details: {
+                code: "SUCCESS",
+                message: "Suggestions fetched successfully!"
+            }
+        });
     } catch (e) {
-        res.status(400).send(e);
+        res.status(400).send({
+            success: false,
+            details: {
+                code: "NOT_FOUND",
+                message: "Suggestions fetch failed. Please try again."
+            }
+        });
     }
 });
 

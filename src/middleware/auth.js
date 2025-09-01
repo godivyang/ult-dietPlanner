@@ -8,13 +8,10 @@ const auth = async (req, res, next) => {
     try {
         let token = req.cookies.token;
         // let token;
-        console.log("token", token)
         
         if(!token) {
             if(req.body.code) {
-                console.log("Step 2 success", req.body.code)
                 token = await checkIfValidCode(req.body.code);
-                console.log("Step 3 success", token);
             } else {
                 throw new Error();
             }
@@ -24,22 +21,21 @@ const auth = async (req, res, next) => {
         let verifyToken = await checkIfValidToken(token);
         if(!verifyToken) {
             if(req.body.code) {
-                console.log("Step 2 success", req.body.code)
                 token = await checkIfValidCode(req.body.code);
-                console.log("Step 3 success", token);
                 verifyToken = await checkIfValidToken(token);
             } else {
                 throw new Error();
             }
         }
-        const {userName, userId} = verifyToken;
-        if(!userName) throw new Error();
+        const {name, _id} = verifyToken;
+        if(!name) throw new Error();
 
         req.token = token;
-        req.userName = userName;
-        req.userId = userId;
+        req.userName = name;
+        req.userId = _id;
         next();
     } catch (e) {
+        console.log(e)
         res.status(401).send({ error: "Please authenticate." });
     }
 }
@@ -47,10 +43,8 @@ const auth = async (req, res, next) => {
 const checkIfValidCode = async (code) => {
     try {
         const response = await axiosInstance.post("/sso/crossAppLogin", { code });
-        console.log("response",response.data)
-        return response.data;
+        return response.data.data;
     } catch (e) {
-        console.log("Step 3 failed")
         return undefined;
     };
 }
@@ -58,10 +52,8 @@ const checkIfValidCode = async (code) => {
 const checkIfValidToken = async (token) => {
     try {
         const response = await axiosInstance.post("/user/me", { token });
-        console.log("Step 4 success")
-        return response.data;
+        return response.data.data;
     } catch (e) {
-        console.log("Step 4 failed")
         return undefined;
     }
 }

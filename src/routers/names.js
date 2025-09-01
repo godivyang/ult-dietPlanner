@@ -13,9 +13,22 @@ router.post("/names", auth, async (req, res) => {
         const names = await Names.find({ 
             author: req.userId 
         });
-        res.send(names);
+        res.send({
+            success: true,
+            data: names,
+            details: {
+                code: "SUCCESS",
+                message: "Name saved successfully!"
+            }
+        });
     } catch (e) {
-        res.status(400).send(e);
+        res.status(400).send({
+            success: false,
+            details: {
+                code: "NOT_FOUND",
+                message: "Name could not be saved. Please try again."
+            }
+        });
     }
 });
 
@@ -24,9 +37,22 @@ router.get("/names", auth, async (req, res) => {
         const names = await Names.find({
             author: req.userId
         });
-        res.send(names);
+        res.send({
+            success: true,
+            data: names,
+            details: {
+                code: "SUCCESS",
+                message: "Names fetched successfully!"
+            }
+        });
     } catch (e) {
-        res.status(400).send(e);
+        res.status(400).send({
+            success: false,
+            details: {
+                code: "NOT_FOUND",
+                message: "Names not found. Please try again."
+            }
+        });
     }
 });
 
@@ -36,9 +62,22 @@ router.delete("/names/:_id", auth, async (req, res) => {
         const names = await Names.find({ 
             author: req.userId 
         });
-        res.send(names);
+        res.send({
+            success: true,
+            data: names,
+            details: {
+                code: "SUCCESS",
+                message: "Name deleted successfully!"
+            }
+        });
     } catch (e) {
-        res.status(400).send(e);
+        res.status(400).send({
+            success: false,
+            details: {
+                code: "NOT_FOUND",
+                message: "Name was not deleted. Please try again."
+            }
+        });
     }
 })
 

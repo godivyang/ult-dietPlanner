@@ -10,9 +10,22 @@ router.post("/diets", auth, async (req, res) => {
             author: req.userId
         });
         await diet.save();
-        res.send(diet);
+        res.send({
+            success: true,
+            data: diet,
+            details: {
+                code: "SUCCESS",
+                message: "Diet saved successfully!"
+            }
+        });
     } catch (e) {
-        res.status(400).send(e);
+        res.status(400).send({
+            success: false,
+            details: {
+                code: "INTERNAL_ERROR",
+                message: "Diet was not saved. Please try again."
+            }
+        });
     }
 });
 
