@@ -28,6 +28,7 @@ const auth = async (req, res, next) => {
             }
         }
         const {name, _id} = verifyToken;
+        console.log(verifyToken)
         if(!name) throw new Error();
 
         req.token = token;
