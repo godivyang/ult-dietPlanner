@@ -7,9 +7,7 @@ const axiosInstance = axios.create({
 const auth = async (req, res, next) => {
     try {
         let token = req.cookies.token;
-        // let token;
-        // console.log("step1", token)
-        // console.log("step1 code",req.body.code)
+        
         if(req.body?.code || !token) {
             if(req.body.code) {
                 token = await checkIfValidCode(req.body.code);
@@ -19,9 +17,8 @@ const auth = async (req, res, next) => {
             }
         }
 
-        // if(!author) throw new Error({ error: "Please authenticate." });
         let verifyToken = await checkIfValidToken(token);
-        // console.log("step 1:", verifyToken, req.body?.code)
+        
         if(!verifyToken) {
             if(req.body.code) {
                 token = await checkIfValidCode(req.body.code);
@@ -33,7 +30,7 @@ const auth = async (req, res, next) => {
             }
         }
         const {name, _id} = verifyToken;
-        console.log("info", verifyToken)
+        
         if(!name) throw new Error();
 
         req.token = token;
