@@ -22,7 +22,6 @@ router.post("/user/me", auth, async (req, res) => {
             }
         });
     } catch (e) {
-        console.log(e)
         res.status(400).send({
             success: false,
             details: {

@@ -8,10 +8,11 @@ const auth = async (req, res, next) => {
     try {
         let token = req.cookies.token;
         // let token;
-        console.log("token",token)
+        console.log("step1", token)
         if(!token) {
             if(req.body.code) {
                 token = await checkIfValidCode(req.body.code);
+                console.log("step2", token)
             } else {
                 throw new Error();
             }
@@ -25,6 +26,7 @@ const auth = async (req, res, next) => {
                 token = await checkIfValidCode(req.body.code);
                 verifyToken = await checkIfValidToken(token);
                 // console.log("step 2:", verifyToken)
+                console.log("step3", token)
             } else {
                 throw new Error();
             }
