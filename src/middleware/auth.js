@@ -8,9 +8,9 @@ const auth = async (req, res, next) => {
     try {
         let token = req.cookies.token;
         // let token;
-        console.log("step1", token)
-        console.log("step1 code",req.body.code)
-        if(code || !token) {
+        // console.log("step1", token)
+        // console.log("step1 code",req.body.code)
+        if(req.body?.code || !token) {
             if(req.body.code) {
                 token = await checkIfValidCode(req.body.code);
                 console.log("step2", token)
