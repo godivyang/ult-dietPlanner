@@ -1,4 +1,4 @@
-const axios = require("axios");
+import axios from "axios";
 const axiosInstance = axios.create({
     baseURL: process.env.ULTIMATE_UTILITY_AUTH_URL,
     withCredentials: true
@@ -6,12 +6,12 @@ const axiosInstance = axios.create({
 
 const auth = async (req, res, next) => {
     try {
-        let token = req.cookies.token;
+        let token = req.cookies?.token;
         
         if(req.body?.code || !token) {
             if(req.body.code) {
                 token = await checkIfValidCode(req.body.code);
-                console.log("step2", token)
+                // console.log("step2", token)
             } else {
                 throw new Error();
             }
@@ -24,7 +24,7 @@ const auth = async (req, res, next) => {
                 token = await checkIfValidCode(req.body.code);
                 verifyToken = await checkIfValidToken(token);
                 // console.log("step 2:", verifyToken)
-                console.log("step3", token)
+                // console.log("step3", token)
             } else {
                 throw new Error();
             }
@@ -39,11 +39,18 @@ const auth = async (req, res, next) => {
         next();
     } catch (e) {
         // console.log(e)
-        res.status(401).send({ error: "Please authenticate." });
+        res.status(401).send({
+            success: false,
+            details: {
+                code: "AUTH_ERROR",
+                message: "Authentication failed!"
+            }
+        });
     }
 }
 
 const checkIfValidCode = async (code) => {
+    // console.log(axiosInstance.defaults.baseURL)
     try {
         const response = await axiosInstance.post("/sso/crossAppLogin", { code });
         return response.data.data;
@@ -61,4 +68,4 @@ const checkIfValidToken = async (token) => {
     }
 }
 
-module.exports = auth;
+export default auth;

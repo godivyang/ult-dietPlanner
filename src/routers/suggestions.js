@@ -1,7 +1,10 @@
-const express = require("express");
+// const express = require("express");
+import express from "express";
 const router = new express.Router();
-const auth = require("../middleware/auth");
-const Suggestions = require("../models/suggestions");
+// const auth = require("../middleware/auth");
+import auth from "../middleware/auth.js";
+// const Suggestions = require("../models/suggestions");
+import Suggestions from "../models/suggestions.js";
 
 router.get("/suggestions", auth, async (req, res) => {
     try {
@@ -27,4 +30,5 @@ router.get("/suggestions", auth, async (req, res) => {
     }
 });
 
-module.exports = router;
+// module.exports = router;
+export default router;

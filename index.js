@@ -1,13 +1,15 @@
-const express = require("express");
-require("dotenv").config();
-const userRouter = require("./src/routers/user");
-const suggestionsRouter = require("./src/routers/suggestions");
-const dietsRouter = require("./src/routers/diets");
-const namesRouter = require("./src/routers/names");
+import "dotenv/config";
+// dotenv.config();
+import express, { json } from "express";
 
-const cookieParser = require("cookie-parser");
-const cors = require("cors");
-require("./src/db/mongoose");
+import cookieParser from "cookie-parser";
+import cors from "cors";
+import "./src/db/mongoose.js";
+
+import userRouter from "./src/routers/user.js";
+import suggestionsRouter from "./src/routers/suggestions.js";
+import dietsRouter from "./src/routers/diets.js";
+import namesRouter from "./src/routers/names.js";
 
 const app = express();
 const port = process.env.PORT || 4002;
@@ -28,7 +30,7 @@ app.use(cors({
     credentials: true
 }));
 
-app.use(express.json());
+app.use(json());
 
 app.use(cookieParser());
 

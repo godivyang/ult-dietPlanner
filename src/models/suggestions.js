@@ -1,4 +1,5 @@
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const suggestionsSchema = mongoose.Schema({
     description: {
@@ -21,4 +22,5 @@ suggestionsSchema.methods.toJSON = function() {
 
 const Suggestions = mongoose.model("Suggestions", suggestionsSchema);
 
-module.exports = Suggestions;
+// module.exports = Suggestions;
+export default Suggestions;

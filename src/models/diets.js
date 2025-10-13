@@ -1,5 +1,6 @@
-const mongoose = require("mongoose");
-const Suggestions = require("./suggestions");
+import mongoose from "mongoose";
+// const Suggestions = require("./suggestions");
+import Suggestions from "./suggestions.js";
 
 const dietsSchema = new mongoose.Schema({
     description: {
@@ -45,4 +46,5 @@ dietsSchema.post('save', async function (doc) {
 
 const Diets = mongoose.model("Diets", dietsSchema);
 
-module.exports = Diets
+// module.exports = Diets
+export default Diets;

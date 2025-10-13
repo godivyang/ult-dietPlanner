@@ -1,7 +1,10 @@
-const express = require("express");
+// const express = require("express");
+import express from "express";
 const router = new express.Router();
-const auth = require("../middleware/auth");
-const Names = require("../models/names");
+// const auth = require("../middleware/auth");
+// const Names = require("../models/names");.
+import auth from "../middleware/auth.js";
+import Names from "../models/names.js";
 
 router.post("/names", auth, async (req, res) => {
     try {
@@ -81,4 +84,5 @@ router.delete("/names/:_id", auth, async (req, res) => {
     }
 })
 
-module.exports = router;
+// module.exports = router;
+export default router;

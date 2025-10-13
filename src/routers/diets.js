@@ -1,7 +1,10 @@
-const express = require("express");
+// const express = require("express");
+import express from "express";
 const router = new express.Router();
-const auth = require("../middleware/auth");
-const Diets = require("../models/diets");
+// const auth = require("../middleware/auth");
+// const Diets = require("../models/diets");
+import auth from "../middleware/auth.js";
+import Diets from "../models/diets.js";
 
 router.post("/diets", auth, async (req, res) => {
     try {
@@ -29,4 +32,5 @@ router.post("/diets", auth, async (req, res) => {
     }
 });
 
-module.exports = router;
+// module.exports = router;
+export default router;
