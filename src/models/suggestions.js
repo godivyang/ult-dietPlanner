@@ -14,6 +14,9 @@ const suggestionsSchema = mongoose.Schema({
     }
 });
 
+// prevent duplicates of same (author + description)
+suggestionsSchema.index({ author: 1, description: 1 }, { unique: true });
+
 suggestionsSchema.methods.toJSON = function() {
     let suggestionsObject = this.toObject();
     delete suggestionsObject.author;
