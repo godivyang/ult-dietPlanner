@@ -5,7 +5,7 @@ const suggestionsSchema = mongoose.Schema({
     description: {
         type: String,
         required: true,
-        minLength: 1,
+        minLength: 11,
         maxLength: 400
     },
     author: {
