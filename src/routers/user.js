@@ -38,6 +38,14 @@ function extractJSON(responseText) {
 
 router.get("/user/wakeUltUtl", async (req, res) => {
     await axios.create({baseURL: "https://ult-userauth.onrender.com/"}).get("/");
+    res.send({
+        success: true,
+        data: "",
+        details: {
+            code: "SUCCESS",
+            message: "Ultimate Utility is awake!"
+        }
+    });
 });
 
 router.post("/user/me", auth, async (req, res) => {
