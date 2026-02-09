@@ -102,7 +102,7 @@ ${req.body.query}
 
         main();
     } catch (e) {
-
+console.log(e);
     }
 });
 
