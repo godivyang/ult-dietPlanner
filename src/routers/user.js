@@ -1,7 +1,12 @@
 // const axios = require("axios");
 import axios from "axios";
-import { GoogleGenAI } from "@google/genai";
-const ai = new GoogleGenAI({});
+// import { GoogleGenAI } from "@google/genai";
+// const ai = new GoogleGenAI({});
+
+import { OpenRouter } from '@openrouter/sdk';
+const openRouter = new OpenRouter({
+  apiKey: process.env.OPEN_ROUTER_API_KEY,
+});
 
 import express from "express";
 // const express = require("express");
@@ -73,6 +78,54 @@ router.post("/user/me", auth, async (req, res) => {
 
 router.post("/generate/keyword_title", auth, async (req, res) => {
     try {
+        const response = await openRouter.chat.send({
+        chatGenerationParams: {
+            model: "openai/gpt-5.2",
+            messages: [
+            {
+                role: "user",
+                content: 
+`Generate a JSON response with exactly the following format:
+
+{
+  "title": "string (short catchy title, max 15 characters)",
+  "keyword": "string (keyword for image search)"
+}
+
+Post:
+${req.body.query}
+`,
+            },
+            ],
+            maxTokens: 100
+        }
+        });
+        // console.log(response.choices);
+        let parsedResponse = extractJSON(response.choices[0].message.content);
+        // console.log(parsedResponse);
+        res.send({
+            success: true,
+            data: parsedResponse,
+            details: {
+                code: "SUCCESS",
+                message: "Title generated successfully!"
+            }
+        });
+    } catch (e) {
+        // console.log(e);
+        res.status(400).send({
+            success: false,
+            details: {
+                code: "ERROR",
+                message: "Title generation failed!"
+            }
+        })
+    }
+})
+
+/*
+router.post("/generate/keyword_title", auth, async (req, res) => {
+    try {
         async function main() {
         const response = await ai.models.generateContent({
             model: "gemini-2.5-flash",
@@ -102,14 +155,17 @@ ${req.body.query}
 
         main();
     } catch (e) {
-console.log(e);
+// console.log(e);
     }
 });
+*/
+
+
 
 router.post("/generate/images", auth, async (req, res) => {
     // console.log("user", req.author);
     try {
-        console.log(req.body.query);
+        // console.log(req.body.query);
         const response = await axios.get("https://api.unsplash.com/search/photos", {
             params: {
                 page: 1, per_page: 10,
