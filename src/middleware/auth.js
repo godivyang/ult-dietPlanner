@@ -1,5 +1,5 @@
 import axios from "axios";
-const { getError } = require("./response.js");
+import { getError, getSuccess } from "./response.js";
 const axiosInstance = axios.create({
     baseURL: process.env.ULTIMATE_UTILITY_AUTH_URL,
     withCredentials: true
