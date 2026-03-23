@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getError, getSuccess } from "./response.js";
+import { getError, setCookie } from "./response.js";
 const axiosInstance = axios.create({
     baseURL: process.env.ULTIMATE_UTILITY_AUTH_URL,
     withCredentials: true
@@ -22,14 +22,18 @@ const auth = async (req, res, next) => {
 
         if(!userDetails) throw new Error("Login token expired.");
 
-        const {name, _id} = userDetails;
+        const {name, _id, newToken} = userDetails;
         
         if(!name) throw new Error("Token verified but user not found.");
 
-        req.token = token;
+        req.token = newToken || token;
         req.userName = name;
         req.userId = _id;
-
+        
+        if(newToken) {
+            setCookie(res, newToken);
+        }
+        
         next();
 
     } catch (e) {
