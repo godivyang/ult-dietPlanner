@@ -78,7 +78,7 @@ router.get("/diets/:_name/:_count", auth, async (req, res) => {
                                 userId: await getIdFromName(name, req.userId),
                                 diet: doc.description[0][name]
                             });
-                            await newDiet.save();
+                            // await newDiet.save();
                         } catch (e) {}
                     }
                 }
