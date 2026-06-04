@@ -10,6 +10,7 @@ import userRouter from "./src/routers/user.js";
 import suggestionsRouter from "./src/routers/suggestions.js";
 import dietsRouter from "./src/routers/diets.js";
 import namesRouter from "./src/routers/names.js";
+import clientsRouter from "./src/routers/clients.js";
 
 const app = express();
 const port = process.env.PORT || 4002;
@@ -38,6 +39,7 @@ app.use(userRouter);
 app.use(suggestionsRouter);
 app.use(dietsRouter);
 app.use(namesRouter);
+app.use(clientsRouter);
 
 app.listen(port, () => {
     console.log("Diet planner server is up on port", port);
