@@ -57,42 +57,6 @@ router.get("/diets/:_name/:_count", auth, async (req, res) => {
             })
             .sort({ createdDate: -1 })
             .limit(req.params._count || 5);
-
-        if(diets.length === 0) {
-            diets = await Diets.find({
-                author: req.userId
-            })
-            .sort({ createdDate: -1 }).lean();
-            if(!diets[0].diet) {
-                // this means these diets are not yet updated
-                for(let doc of diets) {
-                    for(let name of Object.keys(doc.description[0])) {
-                        try {
-                            let newDiet = new Diets({
-                                author: req.userId,
-                                createdDate: doc._id.getTimestamp(),
-                                userId: await getIdFromName(name, req.userId),
-                                diet: doc.description[0][name]
-                            });
-                            await newDiet.save();
-                        } catch (e) {}
-                    }
-                    try {
-                        await Diets.deleteOne({ _id: doc._id });
-                    } catch (e) {
-
-                    }
-                }
-                diets = await Diets.find({ 
-                        author: req.userId, 
-                        userId: _id
-                    })
-                    .sort({ createdDate: -1 })
-                    .limit(req.params._count || 5);
-            } else {
-                diets = [];
-            }
-        }
         
         res.send(getSuccess({data: diets, message: "Diets fetched successfully!"}));
     
