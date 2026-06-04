@@ -85,6 +85,8 @@ router.get("/diets/:_name/:_count", auth, async (req, res) => {
                     })
                     .sort({ createdDate: -1 })
                     .limit(req.params._count || 5);
+            } else {
+                diets = [];
             }
         }
         
