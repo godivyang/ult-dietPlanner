@@ -72,13 +72,15 @@ router.get("/diets/:_name/:_count", auth, async (req, res) => {
                     if(!doc.description) continue;
                     for(let obj of doc.description) {
                         for(let name of Object.keys(obj)) {
-                            let newDiet = new Diets({
-                                author: req.userId,
-                                createdDate: doc._id.getTimestamp(),
-                                userId: await getIdFromName(name, req.userId),
-                                diet: doc.description[name]
-                            });
-                            await newDiet.save();
+                            try {
+                                let newDiet = new Diets({
+                                    author: req.userId,
+                                    createdDate: doc._id.getTimestamp(),
+                                    userId: await getIdFromName(name, req.userId),
+                                    diet: doc.description[name]
+                                });
+                                await newDiet.save();
+                            } catch (e) {}
                         }
                     }
                 }
@@ -93,7 +95,7 @@ router.get("/diets/:_name/:_count", auth, async (req, res) => {
             res.send(getSuccess({data: diets, message: "Diets fetched successfully!"}));
         }
     } catch (e) {
-        console.log(e)
+        console.log(req.e)
         res.status(400).send(getError({message: "Client details not found."}));
     }
 });
