@@ -57,19 +57,15 @@ router.get("/diets/:_name/:_count", auth, async (req, res) => {
             })
             .sort({ createdDate: -1 })
             .limit(req.params._count || 5);
-        // console.log(diets)
-        if(diets.length == req.params._count) {
-            res.send(getSuccess({data: diets, message: "Diets fetched successfully!"}));
-        } else {
-            let diet = await Diets.find({
+
+        if(diets.length === 0) {
+            diets = await Diets.find({
                 author: req.userId
-            }).limit(1);
-            if(!diet.diet) {
-                diets = await Diets.find({
-                    author: req.userId
-                }).lean();
+            })
+            .sort({ createdDate: -1 }).lean();
+            if(!diets[0].diet) {
+                // this means these diets are not yet updated
                 for(let doc of diets) {
-                    if(!doc.description) continue;
                     for(let name of Object.keys(doc.description[0])) {
                         try {
                             let newDiet = new Diets({
@@ -78,22 +74,23 @@ router.get("/diets/:_name/:_count", auth, async (req, res) => {
                                 userId: await getIdFromName(name, req.userId),
                                 diet: doc.description[0][name]
                             });
-                            // await newDiet.save();
+                            await newDiet.save();
+                            await Diets.deleteOne({ _id: doc._id });
                         } catch (e) {}
                     }
                 }
+                diets = await Diets.find({ 
+                        author: req.userId, 
+                        userId: _id
+                    })
+                    .sort({ createdDate: -1 })
+                    .limit(req.params._count || 5);
             }
-            diets = await Diets.find({ 
-                author: req.userId, 
-                userId: _id
-            })
-            .sort({ createdDate: -1 })
-            .limit(req.params._count || 5);
-            // console.log(diets);
-            res.send(getSuccess({data: diets, message: "Diets fetched successfully!"}));
         }
+        
+        res.send(getSuccess({data: diets, message: "Diets fetched successfully!"}));
+    
     } catch (e) {
-        console.log(e)
         res.status(400).send(getError({message: "Client details not found."}));
     }
 });
