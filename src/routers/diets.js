@@ -70,18 +70,16 @@ router.get("/diets/:_name/:_count", auth, async (req, res) => {
                 }).lean();
                 for(let doc of diets) {
                     if(!doc.description) continue;
-                    for(let obj of doc.description) {
-                        for(let name of Object.keys(obj)) {
-                            try {
-                                let newDiet = new Diets({
-                                    author: req.userId,
-                                    createdDate: doc._id.getTimestamp(),
-                                    userId: await getIdFromName(name, req.userId),
-                                    diet: doc.description[name]
-                                });
-                                await newDiet.save();
-                            } catch (e) {}
-                        }
+                    for(let name of Object.keys(description[0])) {
+                        try {
+                            let newDiet = new Diets({
+                                author: req.userId,
+                                createdDate: doc._id.getTimestamp(),
+                                userId: await getIdFromName(name, req.userId),
+                                diet: doc.description[0][name]
+                            });
+                            await newDiet.save();
+                        } catch (e) {}
                     }
                 }
             }
@@ -91,11 +89,11 @@ router.get("/diets/:_name/:_count", auth, async (req, res) => {
             })
             .sort({ createdDate: -1 })
             .limit(req.params._count || 5);
-            console.log(diets);
+            // console.log(diets);
             res.send(getSuccess({data: diets, message: "Diets fetched successfully!"}));
         }
     } catch (e) {
-        console.log(req.e)
+        console.log(e)
         res.status(400).send(getError({message: "Client details not found."}));
     }
 });
