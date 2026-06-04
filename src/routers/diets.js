@@ -91,7 +91,7 @@ router.get("/diets/:_name/:_count", auth, async (req, res) => {
             })
             .sort({ createdDate: -1 })
             .limit(req.params._count || 5);
-            
+            console.log(diets);
             res.send(getSuccess({data: diets, message: "Diets fetched successfully!"}));
         }
     } catch (e) {
