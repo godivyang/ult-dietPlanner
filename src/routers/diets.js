@@ -75,8 +75,12 @@ router.get("/diets/:_name/:_count", auth, async (req, res) => {
                                 diet: doc.description[0][name]
                             });
                             await newDiet.save();
-                            await Diets.deleteOne({ _id: doc._id });
                         } catch (e) {}
+                    }
+                    try {
+                        await Diets.deleteOne({ _id: doc._id });
+                    } catch (e) {
+
                     }
                 }
                 diets = await Diets.find({ 
