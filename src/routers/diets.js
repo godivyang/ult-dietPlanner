@@ -70,7 +70,7 @@ router.get("/diets/:_name/:_count", auth, async (req, res) => {
                 }).lean();
                 for(let doc of diets) {
                     if(!doc.description) continue;
-                    for(let name of Object.keys(description[0])) {
+                    for(let name of Object.keys(doc.description[0])) {
                         try {
                             let newDiet = new Diets({
                                 author: req.userId,
